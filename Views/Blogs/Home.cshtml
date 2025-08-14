@@ -1,0 +1,65 @@
+﻿@using MyBlog.Models.Application.Features.Posts.Queries.GetAllPaginatedPost;
+@model GetAllPaginatedPostQueryResponse;
+
+<div class="all-blog-posts">
+    <div class="row">
+        @foreach (var post in Model.Posts)
+        {
+            <div class="col-lg-6">
+                <a asp-controller="Blogs"
+                   asp-action="BlogDetails"
+                   asp-route-id="@post.Id"
+                   style="display:block; text-decoration:none; color:inherit;">
+                    <div class="blog-post">
+                        @if (post.ImageUrl.Contains("http"))
+                        {
+                            <div class="blog-thumb">
+                                <img src="@post.ImageUrl" alt="">
+                            </div>
+                        }
+                        <div class="down-content">
+                            <span>@post.Name</span>
+                            <ul class="post-info">
+                                <li><a>@post.UserName</a></li>
+                                <li><a>@post.PublishDate.ToString("MM/dd/yyyy")</a></li>
+                                <li><a>@post.ViewCount Views</a></li>
+                            </ul>
+                            <p>@post.Description.Substring(0, 120).....</p>
+                            <div class="post-options">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <ul class="post-tags">
+                                            <li><i class="fa fa-tags"></i></li>
+                                            @foreach (var item in post.Tags.Trim().Split(","))
+                                            {
+                                                <li><a href="#">@item.Trim()</a>,</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+
+
+        <div class="col-lg-12">
+            <ul class="page-numbers">
+                @if (@Model.IsHasPrevious)
+                {
+                    <li><a asp-controller="Blogs" asp-action="Home" asp-route-page="@(Model.CurrentPageNumber - 1)"><i class="fa fa-angle-double-left"></i></a></li>
+                    <li><a asp-controller="Blogs" asp-action="Home" asp-route-page="@(Model.CurrentPageNumber - 1)">@(Model.CurrentPageNumber - 1)</a></li>
+                }
+                <li class="active"><a>@Model.CurrentPageNumber</a></li>
+                @if (@Model.IsHasNext)
+                {
+                    <li><a asp-controller="Blogs" asp-action="Home" asp-route-page="@(Model.CurrentPageNumber + 1)">@(Model.CurrentPageNumber + 1)</a></li>
+                    <li><a asp-controller="Blogs" asp-action="Home" asp-route-page="@(Model.CurrentPageNumber + 1)"><i class="fa fa-angle-double-right"></i></a></li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>

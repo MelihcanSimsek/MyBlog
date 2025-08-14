@@ -1,0 +1,19 @@
+﻿.account-container {
+    background: #3F5EFB;
+    background: radial-gradient(circle,rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:2rem 0;
+}
+
+.account-box{
+    background-color:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+    max-width:500px;
+    width:100%;
+    opacity:0.8;
+}

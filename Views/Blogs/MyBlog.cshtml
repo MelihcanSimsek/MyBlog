@@ -1,0 +1,55 @@
+﻿@using MyBlog.Models.Application.Features.Posts.Queries.GetAllUserPost;
+@model GetAllUserPostQueryResponse;
+
+@{
+    ViewData["Title"] = User.Identity.Name+ " Blogs";
+}
+
+<div class="all-blog-posts">
+    <div class="row">
+        @foreach (var post in Model.Posts)
+        {
+            <div class="col-lg-12">
+                     <a asp-controller="Blogs"
+                   asp-action="BlogDetails"
+                   asp-route-id="@post.Id"
+                   style="display:block; text-decoration:none; color:inherit;"> 
+                <div class="blog-post">
+                    
+                        @if (post.ImageUrl.Contains("http"))
+                        {
+                        <div class="blog-thumb">
+                            <img src="@post.ImageUrl" alt="">
+                        </div>
+                        }
+                    <div class="down-content">
+                        <span>@post.Name</span>
+                        <ul class="post-info">
+                            <li><a href="#">@User.Identity.Name</a></li>
+                            <li><a href="#">@post.PublishDate</a></li>
+                            <li><a href="#">@post.CommentCount Comments</a></li>
+                            <li><a href="#">@post.LikeCount Likes</a></li>
+                            <li><a href="#">@post.ViewCount Views</a></li>
+                        </ul>
+                        <p>@post.Description</p>
+                        <div class="post-options">
+                            <div class="row">
+                                <div class="col-6">
+                                    <ul class="post-tags">
+                                        <li><i class="fa fa-tags"></i></li>
+                                        @foreach (var item in post.Tags.Trim().Split(","))
+                                        {
+                                            <li><a href="#">@item.Trim()</a>,</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            </div>
+        }
+    
+    </div>
+</div>

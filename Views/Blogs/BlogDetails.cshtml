@@ -1,0 +1,107 @@
+﻿@using MyBlog.Models.Application.Features.Posts.Queries.GetPost
+@model GetPostQueryResponse
+
+<div class="all-blog-posts">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="blog-post">
+                @if (Model.ImageUrl.Contains("http"))
+                {
+                    <div class="blog-thumb">
+                        <img src="@Model.ImageUrl" alt="">
+                    </div>
+                }
+                <div class="down-content">
+                    <span>@Model.Name</span>
+                    <ul class="post-info">
+                        <li><a href="#">@Model.UserName</a></li>
+                        <li><a href="#">@Model.PublishDate.ToString("MM/dd/yyyy")</a></li>
+                        <li><a class="fa fa-5x fa-eye text-primary"> @Model.ViewCount Views</a></li>
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li><a class="fa fa-5x fa-thumbs-up text-danger"> @Model.LikeCount Likes</a></li>
+                        }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                <form asp-controller="Blogs" asp-action="Like" method="post">
+                                    <input type="hidden" name="postId" value="@Model.Id" />
+                                    <button class="btn btn-outline-danger w-100" type="submit">Like @Model.LikeCount</button>
+                                </form>
+                            </li>
+                        }
+                    </ul>
+                    <p>@Model.Description</p>
+                    <div class="post-options">
+                        <div class="row">
+                            <div class="col-6">
+                                <ul class="post-tags">
+                                    <li><i class="fa fa-tags"></i></li>
+                                    @foreach (var item in Model.Tags.Trim().Split(","))
+                                    {
+                                        <li><a href="#">@item.Trim()</a>,</li>
+                                    }
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="col-lg-12">
+                <div class="sidebar-item submit-comment">
+                    <div class="sidebar-heading">
+                        <h2>Your comment</h2>
+                    </div>
+                    <form asp-controller="Blogs" asp-action="Comment" method="post">
+                        <input type="hidden" name="ParentId" value="@Model.Id" />
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <textarea class="form-control" name="Description"
+                                      rows="6"
+                                      placeholder="Type your comment"
+                                      required></textarea>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="main-button">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+
+        <div class="col-lg-12">
+            <div class="sidebar-item comments">
+                <div class="sidebar-heading">
+                    <h2>@Model.Comments.Count comments</h2>
+                </div>
+                <div class="content">
+                    <ul>
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <li>
+                                <div class="author-thumb">
+                                    <img src="/images/userimage.jpg" alt="">
+                                </div>
+                                <div class="right-content">
+                                    <h4>
+                                        @comment.UserName
+                                        <span>@comment.PublishDate.ToString("MM/dd/yyyy")</span>
+                                    </h4>
+                                    <p>@comment.Description</p>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
